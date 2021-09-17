@@ -12,33 +12,32 @@ const io = socketio(server)
 app.use(express.static(path.join(__dirname,'../public'))) // rendering the static webpages
 
 
-// let count = 0;
-// io.on('connection',(socket)=> {
-//     console.log("connection is eastablished")
-//     socket.emit("countUpdated" , count )
-
-//     // socket.on('increment' ,()=> {
-//     //     count++;
-//     //     socket.emit("countUpdated" , count)
-//     // })
-//     socket.on('increment' ,()=> {
-//         count++
-//         io.emit('countUpdated',count)
-//     })
-// })
-
 io.on("connection" ,(socket)=> {
-    io.emit("Welcome" , 'welcome to the website')
+    io.emit("Welcome" , 'Welcome to the Chat App')
+    console.log("user connected")
+    
+
+    socket.on('send' ,(e)=> {
+        console.log(e)
+        socket.emit('received', 'data received')
+    })
+
+    socket.on('disconnect',()=> {
+        console.log("user disconnnected")
+    })
 })
 
-io.on('send' ,(socket)=> {
-    socket.emit('send', 'message send')
 
-})
 
 
 app.get('/' ,(req,res)=> {
     res.send("This is home page1")
+})
+
+//sending complete html with as a resonse
+const pa = path.join(__dirname,"test.html")
+app.get('/another' , (req,res)=> {
+    res.sendFile(pa)
 })
 
 
