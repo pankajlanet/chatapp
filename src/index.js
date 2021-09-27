@@ -35,8 +35,8 @@ io.on("connection", (socket) => {
       return callback("Profenity is not al");
     } else {
 
-           io.emit("received", message);
-          callback();
+           io.emit("received", generateMessage(message));
+          callback(); 
 
         
     }
@@ -74,6 +74,7 @@ app.get("/another", (req, res) => {
   res.sendFile(pa);
 });
 
+console.log()
 //Listening the server of the given port
 server.listen(3000, () => {
   console.log("Server is hosted on port : ", 3000);

@@ -47,20 +47,33 @@ submitmsg.addEventListener("click", () => {
 
 // Receving the message
 socket.on("received", (m) => {
-    if (m === "A new User have joined") {
+    if (m.text === "A new User have joined") {
         const node = document.createElement("p");
         node.innerHTML = m;
         node.style.color = "green";
         chatbox.appendChild(node);
-    } else if (m === "User left") {
-        const node = document.createElement("p");
-        node.innerHTML = m;
-        node.style.color = "red";
-        chatbox.appendChild(node);
+    } else if (m.text === "User left") {
+        console.log(m)
+        const div = document.createElement('div')
+        div.className = 'alert alert-danger'
+        div.innerHTML = m.text
+        chatbox.append(div)
+
+    
+        // const node = document.createElement("p");
+        // node.innerHTML = m.text;
+        // node.style.color = "red";
+        // chatbox.appendChild(node);
     } else {
         const node = document.createElement("p");
-        node.innerHTML = m;
+        node.innerHTML = m.text;
         chatbox.appendChild(node);
+   
+        // const div = document.createElement('div')
+        // div.className = 'alert alert-success'
+        // div.innerHTML = m.text
+        // chatbox.append(div)
+
     }
 
     submitmsg.disabled = false
