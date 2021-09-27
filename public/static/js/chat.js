@@ -3,7 +3,7 @@ const socket = io();
 socket.on("Welcome", (count) => {
     const show = document.getElementById("show");
     setTimeout(() => {
-        show.innerHTML = count;
+        show.innerHTML = count.text + count.createdAt;
     }, 2000);
 });
 
@@ -29,7 +29,7 @@ exit.addEventListener("click", (event) => {
 });
 
 // ********************************************************************************************************************
-                                            // Messages
+                                            // Client Side Messages
 // ********************************************************************************************************************
 
 //When Send button is clicked
@@ -69,7 +69,7 @@ socket.on("received", (m) => {
 
 
 // ********************************************************************************************************************
-                                            // Location
+                                            // Client Side Location
 // ********************************************************************************************************************
 
 // Sending the location to server when button is clicked
@@ -79,7 +79,6 @@ submitLocation.addEventListener("click", () => {
     } else {
         console.log(
             navigator.geolocation.getCurrentPosition((position) => {
-                console.log(position.coords.latitude);
 
                 socket.emit(
                     "location",
@@ -94,7 +93,7 @@ submitLocation.addEventListener("click", () => {
             })
         );
     }
-    submitLocation.disabled  = true
+  
 });
 
 

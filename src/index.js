@@ -5,6 +5,7 @@ const path = require("path");
 const http = require("http");
 const socketio = require("socket.io");
 const Filter = require("bad-words");
+const { generateMessage } = require("./message");
 
 // initilizing the  basic setup
 const app = express();
@@ -19,43 +20,42 @@ let personConnected = 0;       // Stores the number of connected users
 io.on("connection", (socket) => {
   ++personConnected;
    // Things to do when user connect to server  
-  console.log(personConnected);
-  io.emit("Welcome", "Welcome to the Chat App");
-  console.log("user connected");
+  io.emit("Welcome", generateMessage("Welcome to the app"));
   socket.broadcast.emit("received", "A new User have joined");
   socket.broadcast.emit("userUpdate", personConnected);
 
+// ********************************************************************************************************************
+                                            // Server Side Messages
+// ********************************************************************************************************************
+
     // Sending the message to everyone received form client to everyone
-  socket.on("send", (e, callback) => {
-    console.log(e);
+  socket.on("send", (message, callback) => {
     const filter = new Filter();
-    if (filter.isProfane(e)) {
+    if (filter.isProfane(message)) {
       return callback("Profenity is not al");
     } else {
 
-            // stimulating the delay from the server
-        setTimeout(() => {
-          io.emit("received", e);
+           io.emit("received", message);
           callback();
-        }, 2000);
 
-      
+        
     }
   });
 
+
+// ********************************************************************************************************************
+                                            //Server side Location
+// ********************************************************************************************************************
    // Sending the location to everyone received form client to everyone
   socket.on("location", (position, callback  /* callback is for providing the acknowlegement to the user */) => {
     
-     setTimeout(()=> {
-        io.emit("locationReceived", position);
+    io.emit("locationReceived", position);
          callback();
-     }, 2000 )   
 
   });
 
   //When user get Disconnected
   socket.on("disconnect", () => {
-    console.log("user disconnnected");
     socket.broadcast.emit("received", "User left");
     --personConnected;
     socket.broadcast.emit("userUpdate", personConnected);
