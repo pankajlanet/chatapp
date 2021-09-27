@@ -98,7 +98,7 @@
     padding: 2px 8px;
   }
    
-  #submitmsg,
+  #submitmsg,#submitLocation,
   #enter{
     background: #ff9800;
     border: 2px solid #e65100;
@@ -205,7 +205,9 @@
     <div id="wrapper">
       <div id="menu">
           <p class="welcome">Welcome, <b></b></p>
-          <p class="logout"><a id="exit" href="#">Exit Chat</a></p>
+          <div style="border:green solid ; margin-right: 16px;" id = 'count'>
+          </div>
+          <p style="display: inline;" class="logout"><a id="exit" href="#">Exit Chat</a></p>
       </div>
 
       <div id="chatbox"></div>
@@ -214,9 +216,10 @@
       
       
 
-      <form  onsubmit="" id= 'sumbit' >
+      <form  onsubmit="(event)=> {event.preventDefault(); }" id= 'sumbit' >
           <input  type="text" id="usermsg" />
           <input  type="button" id="submitmsg" value="Send" />
+          <input  type="button" id="submitLocation" value="Send Location" />
       </form>
   </div>
 
