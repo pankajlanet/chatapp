@@ -32,15 +32,25 @@ io.on("connection", (socket) => {
     if (filter.isProfane(e)) {
       return callback("Profenity is not al");
     } else {
-      io.emit("received", e);
-      callback();
+
+            // stimulating the delay from the server
+        setTimeout(() => {
+          io.emit("received", e);
+          callback();
+        }, 2000);
+
+      
     }
   });
 
    // Sending the location to everyone received form client to everyone
   socket.on("location", (position, callback  /* callback is for providing the acknowlegement to the user */) => {
-    io.emit("locationReceived", position);
-    callback();
+    
+     setTimeout(()=> {
+        io.emit("locationReceived", position);
+         callback();
+     }, 2000 )   
+
   });
 
   //When user get Disconnected

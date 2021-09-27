@@ -23,8 +23,9 @@ socket.on("userUpdate", (value) => {
 });
 
 // exit button Clicked
-exit.addEventListener("click", () => {
-    window.close();
+exit.addEventListener("click", (event) => {
+    event.preventDefault()
+    window.close()
 });
 
 // ********************************************************************************************************************
@@ -40,6 +41,8 @@ submitmsg.addEventListener("click", () => {
         console.log("Message Delevered");
     });
     usermsg.value = "";
+    // disableing the button until the message is delevered
+    submitmsg.disabled = true
 });
 
 // Receving the message
@@ -59,6 +62,9 @@ socket.on("received", (m) => {
         node.innerHTML = m;
         chatbox.appendChild(node);
     }
+
+    submitmsg.disabled = false
+    usermsg.focus()
 });
 
 
@@ -88,6 +94,7 @@ submitLocation.addEventListener("click", () => {
             })
         );
     }
+    submitLocation.disabled  = true
 });
 
 
@@ -99,6 +106,7 @@ socket.on("locationReceived", (locationLink) => {
     node.title = "This is link";
     node.href = locationLink;
     chatbox.appendChild(node);
+    submitLocation.disabled  = false
 });
 
 
