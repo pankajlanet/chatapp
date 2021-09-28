@@ -99,7 +99,7 @@ app.get("/another", (req, res) => {
 
 console.log()
 //Listening the server of the given port
-server.listen(3000, () => {
+server.listen(process.env.PORT, () => {
   console.log("Server is hosted on port : ", 3000);
 });
 
