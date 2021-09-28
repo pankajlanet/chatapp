@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+  <link rel="stylesheet" href="../static/css/index.css">
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,155 +12,6 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-  }
-
-
-  body {
-     background-image: url('https://www.filepicker.io/api/file/u5frNNlBQDQbBX0nh9Mg');
-
-    margin: 20px auto;
-    font-family: "Lato";
-    font-weight: 300;
-  }
-
-  form {
-    padding: 15px 25px;
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-  }
-
-  form label {
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
-
-  input {
-    font-family: "Lato";
-  }
-
-  a {
-    color: #0000ff;
-    text-decoration: none;
-  }
-
-  a:hover {
-    text-decoration: underline;
-  }
-
-  #wrapper,
-  #loginform {
-    margin: 0 auto;
-    padding-bottom: 25px;
-    background: #eee;
-    width: 600px;
-    max-width: 100%;
-    border: 2px solid #212121;
-    border-radius: 4px;
-  }
-
-  #loginform {
-    padding-top: 18px;
-    text-align: center;
-  }
-
-  #loginform p {
-    padding: 15px 25px;
-    font-size: 1.4rem;
-    font-weight: bold;
-  }
-
-  #chatbox {
-    text-align: left;
-    margin: 0 auto;
-    margin-bottom: 25px;
-    padding: 10px;
-    background: #fff;
-    height: 300px;
-    width: 530px;
-    border: 1px solid #a7a7a7;
-    overflow: auto;
-    border-radius: 4px;
-    border-bottom: 4px solid #a7a7a7;
-  }
-
-  #usermsg {
-    flex: 1;
-    border-radius: 4px;
-    border: 1px solid #ff9800;
-  }
-
-  #name {
-    border-radius: 4px;
-    border: 1px solid #ff9800;
-    padding: 2px 8px;
-  }
-
-  #submitmsg,
-  #submitLocation,
-  #enter {
-    background: #ff9800;
-    border: 2px solid #e65100;
-    color: white;
-    padding: 4px 10px;
-    font-weight: bold;
-    border-radius: 4px;
-  }
-
-  .error {
-    color: #ff0000;
-  }
-
-  #menu {
-    padding: 15px 25px;
-    display: flex;
-  }
-
-  #menu p.welcome {
-    flex: 1;
-  }
-
-  a#exit {
-    color: white;
-    background: #c62828;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-weight: bold;
-  }
-
-  .msgln {
-    margin: 0 0 5px 0;
-  }
-
-  .msgln span.left-info {
-    color: orangered;
-  }
-
-  .msgln span.chat-time {
-    color: #666;
-    font-size: 60%;
-    vertical-align: super;
-  }
-
-  .msgln b.user-name,
-  .msgln b.user-name-left {
-    font-weight: bold;
-    background: #546e7a;
-    color: white;
-    padding: 2px 4px;
-    font-size: 90%;
-    border-radius: 4px;
-    margin: 0 5px 0 0;
-  }
-
-  .msgln b.user-name-left {
-    background: orangered;
-  }
-</style>
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -192,18 +44,16 @@
   </nav>
 
 
-    <!-- Sidebar -->
-<div class="  w3-light-grey w3-bar-block" style="width:25%">
-  <h3 class="w3-bar-item">Menu</h3>
-  <a href="#" class="w3-bar-item w3-button">Link 1</a>
-  <a href="#" class="w3-bar-item w3-button">Link 2</a>
-  <a href="#" class="w3-bar-item w3-button">Link 3</a>
-</div>
-
-
 
 
   <h1 style="text-align: center;" id='show'></h1>
+
+  <div id="sidebar">
+    <h3>Users</h3>
+    
+
+  </div>
+
 
   <div id="wrapper">
     <div id="menu">
@@ -215,10 +65,6 @@
 
     <div id="chatbox"></div>
 
-
-
-
-
     <form onsubmit="(event)=> {event.preventDefault(); }" id='sumbit'>
       <input type="text" id="usermsg" />
       <input type="button" id="submitmsg" value="Send" />
@@ -226,8 +72,11 @@
     </form>
   </div>
 
+
+
   <script src="/socket.io/socket.io.js"></script>
   <script src="../static/js/chat.js"></script>
+
 </body>
 
 </html>

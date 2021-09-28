@@ -1,9 +1,9 @@
 const socket = io();
 // WELCOME Message After two seconds when the page loads
-socket.on("Welcome", (count) => {
+socket.on("Welcome", (welcomeMessage) => {
     const show = document.getElementById("show");
     setTimeout(() => {
-        show.innerHTML = count.text + count.createdAt;
+        show.innerHTML = welcomeMessage.text
     }, 2000);
 });
 
@@ -14,7 +14,6 @@ const submitmsg = document.getElementById("submitmsg");
 const output = document.getElementById("output");
 const userCount = document.getElementById("count");
 const exit = document.getElementById("exit");
-const submitLocation = document.getElementById("submitLocation");
 
 
 
@@ -47,32 +46,34 @@ submitmsg.addEventListener("click", () => {
 
 // Receving the message
 socket.on("received", (m) => {
-    if (m.text === "A new User have joined") {
+
+    if (m.text.includes("have joined")) {
         const node = document.createElement("p");
-        node.innerHTML = m;
+        node.innerHTML =  m.text + " at (" + m.createdAt + ")";
         node.style.color = "green";
         chatbox.appendChild(node);
-    } else if (m.text === "User left") {
-        console.log(m)
-        const div = document.createElement('div')
-        div.className = 'alert alert-danger'
-        div.innerHTML = m.text
-        chatbox.append(div)
-
-    
-        // const node = document.createElement("p");
-        // node.innerHTML = m.text;
-        // node.style.color = "red";
-        // chatbox.appendChild(node);
-    } else {
-        const node = document.createElement("p");
-        node.innerHTML = m.text;
-        chatbox.appendChild(node);
-   
+    } else if (m.text.includes("left the room")) {
+        // console.log(m)
         // const div = document.createElement('div')
-        // div.className = 'alert alert-success'
+        // div.className = 'alert alert-danger'
         // div.innerHTML = m.text
         // chatbox.append(div)
+
+    
+        const node = document.createElement("p");
+        node.innerHTML = m.text + " at (" + m.createdAt + ")";
+        node.style.color = "red";
+        chatbox.appendChild(node);
+    } else {
+        // const node = document.createElement("p");
+        // node.innerHTML = m.text;
+        // chatbox.appendChild(node);
+   
+        const div = document.createElement('div')
+        div.className = m.color
+        div.innerHTML =  m.name +  " :   " +  m.text 
+
+        chatbox.append(div)
 
     }
 
@@ -121,10 +122,18 @@ socket.on("locationReceived", (locationLink) => {
     submitLocation.disabled  = false
 });
 
-
+const params = new URLSearchParams(window. location. search)
+const username = params.get('username');
+const room = params.get('room')
+console.log("user is : " , username , "room is : " , room) 
 // const buttonInc = document.getElementById('incr');
 // buttonInc.addEventListener('click' ,()=> {
 // socket.emit('increment')
 //  output.value = value
 //
 // })
+
+
+socket.emit('join' ,{username , room} , (error)=> {
+        console.log(error)
+})

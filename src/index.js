@@ -6,6 +6,7 @@ const http = require("http");
 const socketio = require("socket.io");
 const Filter = require("bad-words");
 const { generateMessage } = require("./message");
+const { addUser, removeUser, getUser } = require("./utils/users");
 
 // initilizing the  basic setup
 const app = express();
@@ -20,9 +21,21 @@ let personConnected = 0;       // Stores the number of connected users
 io.on("connection", (socket) => {
   ++personConnected;
    // Things to do when user connect to server  
-  io.emit("Welcome", generateMessage("Welcome to the app"));
-  socket.broadcast.emit("received", "A new User have joined");
+ 
   socket.broadcast.emit("userUpdate", personConnected);
+  socket.on('join' , ({username , room } , callback) => {
+    socket.join(room)
+    const {error,user} = addUser({id : socket.id , username , room })
+      if(error)
+      {
+          return callback(error)
+      }
+
+     io.emit("Welcome", generateMessage("Welcome to the app"));
+     socket.broadcast.to(user.room).emit("received", generateMessage(`${user.username} have joined`) );
+     callback()
+  })
+
 
 // ********************************************************************************************************************
                                             // Server Side Messages
@@ -30,12 +43,15 @@ io.on("connection", (socket) => {
 
     // Sending the message to everyone received form client to everyone
   socket.on("send", (message, callback) => {
+
+    const user =  getUser(socket.id)
+    console.log(user.room)
     const filter = new Filter();
     if (filter.isProfane(message)) {
-      return callback("Profenity is not al");
+      return callback("Profenity is not allowed");
     } else {
 
-           io.emit("received", generateMessage(message));
+           io.to(user.room).emit("received", generateMessage(message , user.username , user.color));
           callback(); 
 
         
@@ -56,7 +72,14 @@ io.on("connection", (socket) => {
 
   //When user get Disconnected
   socket.on("disconnect", () => {
-    socket.broadcast.emit("received", "User left");
+    const user = removeUser(socket.id);
+
+    if(user)
+    {
+          socket.broadcast.to(user.room). emit("received", generateMessage(`${user.username} left the room`));
+    }
+
+
     --personConnected;
     socket.broadcast.emit("userUpdate", personConnected);
   });
@@ -79,3 +102,5 @@ console.log()
 server.listen(3000, () => {
   console.log("Server is hosted on port : ", 3000);
 });
+
+
