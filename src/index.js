@@ -94,6 +94,7 @@ app.get("/", (req, res) => {
 //sending complete html with as a resonse
 const pa = path.join(__dirname, "test.html");
 app.get("/another", (req, res) => {
+  
   res.sendFile(pa);
 });
 
