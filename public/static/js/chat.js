@@ -16,7 +16,7 @@ const submitmsg = document.getElementById("submitmsg");
 const output = document.getElementById("output");
 const userCount = document.getElementById("count");
 const exit = document.getElementById("exit");
-
+const sidebar = document.getElementById('sidebar')
 
 
 socket.on("userUpdate", (value) => {
@@ -140,6 +140,19 @@ socket.emit('join' ,{username , room} , (error)=> {
         console.log(error)
 })
 
-// socket.on('users' , (users)=> {
-//     console.log(users)
-// })
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
+socket.emit('getuser',"test")
+socket.on('gettingUsers', (user)=> {
+    removeAllChildNodes(sidebar)
+    for(const i of user)
+    {
+    const node = document.createElement('p')
+    node.innerHTML = i.username;
+    sidebar.appendChild(node)
+    }
+})

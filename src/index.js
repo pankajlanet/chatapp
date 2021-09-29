@@ -33,7 +33,16 @@ io.on("connection", (socket) => {
 
      io.emit("Welcome", generateMessage("Welcome to the app"));
      socket.broadcast.to(user.room).emit("received", generateMessage(`${user.username} have joined`) );
+
+     
      callback()
+  })
+  
+  socket.on('getuser',(test)=>  {
+
+    const user = getUser(socket.id)
+    const allUser = getUsersInRoom(user.room)
+    io.to(user.room).emit('gettingUsers' , allUser)
   })
 
 
@@ -71,24 +80,20 @@ io.on("connection", (socket) => {
   });
 
 
-  socket.on('getUsersInRoom' , ()=> {
-    const user = getUser(socket.id);
-    const allUsers = getUsersInRoom(user.room);
-
-    socket.emit('users', allUsers)
-
-  })
-
   //When user get Disconnected
   socket.on("disconnect", () => {
     const user = removeUser(socket.id);
+    console.log(user)
+    console.log(user.room)
+    //  const userAfterRemoval = getUsersInRoom(user.room)
+    //  console.log(userAfterRemoval)
 
     if(user)
     {
           socket.broadcast.to(user.room). emit("received", generateMessage(`${user.username} left the room`));
     }
 
-
+    // io.to(user.room).emit('gettingUsers' , userAfterRemoval)
     --personConnected;
     socket.broadcast.emit("userUpdate", personConnected);
   });
@@ -103,7 +108,6 @@ app.get("/", (req, res) => {
   res.sendFile(pa);
 });
 
-console.log()
 //Listening the server of the given port
 server.listen(process.env.PORT|| 3000, () => {
   console.log("Server is hosted on port : ", 3000);

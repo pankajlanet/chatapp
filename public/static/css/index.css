@@ -158,7 +158,7 @@
     background: orangered;
   }
 
-  #sidebar{
+  #OuterSidebar{
       text-align: center;
       margin: 12px  ;
         position: fixed;
