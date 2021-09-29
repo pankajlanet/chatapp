@@ -45,7 +45,6 @@ io.on("connection", (socket) => {
   socket.on("send", (message, callback) => {
 
     const user =  getUser(socket.id)
-    console.log(user)
     console.log(user.room)
     const filter = new Filter();
     if (filter.isProfane(message)) {
@@ -96,14 +95,10 @@ io.on("connection", (socket) => {
 });
 
 
-//Default home Page
-app.get("/", (req, res) => {
-  res.send("This is home page1");
-});
 
 //sending complete html with as a resonse
 const pa = path.join(__dirname, "test.html");
-app.get("/another", (req, res) => {
+app.get("/", (req, res) => {
   
   res.sendFile(pa);
 });
