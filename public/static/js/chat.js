@@ -81,6 +81,7 @@ socket.on("received", (m) => {
 
     submitmsg.disabled = false
     usermsg.focus()
+    chatbox.scrollTop = chatbox.scrollHeight
 });
 
 
