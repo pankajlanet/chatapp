@@ -98,10 +98,7 @@ submitLocation.addEventListener("click", () => {
 
                 socket.emit(
                     "location",
-                    "https://www.google.com/maps?q=" +
-                    position.coords.latitude +
-                    "," +
-                    position.coords.longitude,
+                    "https://www.google.com/maps?q=" +position.coords.latitude + "," + position.coords.longitude,
                     (message) => {
                         console.log("Message Delevired");
                     }

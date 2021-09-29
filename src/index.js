@@ -83,9 +83,9 @@ io.on("connection", (socket) => {
   //When user get Disconnected
   socket.on("disconnect", () => {
     const user = removeUser(socket.id);
-    console.log(user)
-    console.log(user.room)
-    //  const userAfterRemoval = getUsersInRoom(user.room)
+    // console.log(user)
+    // console.log(user.room)
+     const userAfterRemoval = getUsersInRoom(user.room)
     //  console.log(userAfterRemoval)
 
     if(user)
@@ -93,7 +93,7 @@ io.on("connection", (socket) => {
           socket.broadcast.to(user.room). emit("received", generateMessage(`${user.username} left the room`));
     }
 
-    // io.to(user.room).emit('gettingUsers' , userAfterRemoval)
+    io.to(user.room).emit('gettingUsers' , userAfterRemoval)
     --personConnected;
     socket.broadcast.emit("userUpdate", personConnected);
   });
