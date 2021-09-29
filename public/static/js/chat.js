@@ -1,3 +1,5 @@
+
+
 const socket = io();
 // WELCOME Message After two seconds when the page loads
 socket.on("Welcome", (welcomeMessage) => {
@@ -137,3 +139,7 @@ console.log("user is : " , username , "room is : " , room)
 socket.emit('join' ,{username , room} , (error)=> {
         console.log(error)
 })
+
+// socket.on('users' , (users)=> {
+//     console.log(users)
+// })

@@ -6,7 +6,7 @@ const http = require("http");
 const socketio = require("socket.io");
 const Filter = require("bad-words");
 const { generateMessage } = require("./message");
-const { addUser, removeUser, getUser } = require("./utils/users");
+const { addUser, removeUser, getUser, getUsersInRoom } = require("./utils/users");
 
 // initilizing the  basic setup
 const app = express();
@@ -45,6 +45,7 @@ io.on("connection", (socket) => {
   socket.on("send", (message, callback) => {
 
     const user =  getUser(socket.id)
+    console.log(user)
     console.log(user.room)
     const filter = new Filter();
     if (filter.isProfane(message)) {
@@ -69,6 +70,15 @@ io.on("connection", (socket) => {
          callback();
 
   });
+
+
+  socket.on('getUsersInRoom' , ()=> {
+    const user = getUser(socket.id);
+    const allUsers = getUsersInRoom(user.room);
+
+    socket.emit('users', allUsers)
+
+  })
 
   //When user get Disconnected
   socket.on("disconnect", () => {
@@ -100,7 +110,7 @@ app.get("/another", (req, res) => {
 
 console.log()
 //Listening the server of the given port
-server.listen(process.env.PORT, () => {
+server.listen(process.env.PORT|| 3000, () => {
   console.log("Server is hosted on port : ", 3000);
 });
 

@@ -119,3 +119,5 @@ const getUsersInRoom = (room)=> {
 
 
 module.exports = { getUser,addUser,removeUser, getUsersInRoom}
+
+// console.log(getUsersInRoom('random'))
